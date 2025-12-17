@@ -179,7 +179,7 @@ const Navbar = () => {
           >
             <img
               className="w-7/12 h-7/12 object-cover overflow-hidden"
-              src="/kiss.jpg"
+              src="/frame.svg"
               alt="Menu Visual"
             />
           </div>
