@@ -174,8 +174,6 @@ const Navbar = () => {
           >
             <div
               id="links_wrapper"
-              // FIXED: Removed 'items-center'. Changed to 'items-end' for ALL screens.
-              // This ensures Social Links stay anchored to the bottom alongside Nav Links on mobile.
               className="flex flex-row items-end w-full h-auto md:h-1/3 justify-center gap-8 md:gap-24"
             >
               <div
