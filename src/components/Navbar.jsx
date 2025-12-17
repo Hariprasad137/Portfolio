@@ -15,6 +15,45 @@ const socialLinks = [
   { name: "Instagram", href: "" },
 ];
 
+// --- HAMBURGER COMPONENT ---
+const HamburgerIcon = ({ isOpen }) => {
+  return (
+    <div className="flex flex-col justify-center items-center w-6 h-6 space-y-1 overflow-hidden group">
+      {/* Line 1 */}
+      <span
+        className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
+          isOpen ? "rotate-45 translate-y-1.5" : ""
+        }`}
+      />
+      {/* Line 2 */}
+      <span
+        className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
+          isOpen ? "opacity-0 translate-x-full" : "opacity-100"
+        }`}
+      />
+      {/* Line 3 */}
+      <span
+        className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
+          isOpen ? "-rotate-45 -translate-y-1.5" : ""
+        }`}
+      />
+    </div>
+  );
+};
+
+// --- LINK COMPONENT (Slower Animation) ---
+const MenuLink = ({ to, children }) => {
+  return (
+    <Link to={to} className="relative group inline-block py-1 overflow-hidden">
+      <span className="text-gray-400 transition-colors duration-500 group-hover:text-white">
+        {children}
+      </span>
+      {/* UPDATED: Changed duration-300 to duration-700 for a slower, smoother line */}
+      <span className="absolute bottom-0 left-0 h-[2px] w-full bg-white transform scale-x-0 transition-transform duration-700 ease-out origin-bottom-right group-hover:scale-x-100 group-hover:origin-bottom-left" />
+    </Link>
+  );
+};
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerRef = useRef(null);
@@ -31,8 +70,9 @@ const Navbar = () => {
     let mm = gsap.matchMedia();
     
     let ctx = gsap.context(() => {
-
       tl.current = gsap.timeline({ paused: true });
+
+      // --- DESKTOP ANIMATION ---
       mm.add("(min-width: 768px)", () => {
         gsap.set(containerRef.current, {
           transformOrigin: "top left",
@@ -45,6 +85,7 @@ const Navbar = () => {
 
         tl.current
           .set(containerRef.current, { visibility: "visible" }) 
+          // Animate Navbar and Menu Overlay together
           .to([containerRef.current, navbarRef.current], {
             backgroundColor: DARK_GREY,
             color: "#ffffff",
@@ -54,6 +95,8 @@ const Navbar = () => {
             ease: "power2.out",
           }, "<"); 
       });
+
+      // --- MOBILE ANIMATION ---
       mm.add("(max-width: 767px)", () => {
         gsap.set(containerRef.current, {
           yPercent: -100, 
@@ -93,20 +136,28 @@ const Navbar = () => {
       {/* Top Navigation Bar */}
       <div
         ref={navbarRef} 
-        className="w-full flex justify-center border-b border-gray-300 fixed top-0 left-0 bg-white z-50"
+        // FIX: Removed "transition-colors duration-300" so it doesn't fight with GSAP
+        className="w-full flex justify-center border-b border-gray-300 fixed top-0 left-0 bg-white z-50 text-black"
       >
         <nav className="flex justify-between items-center p-4 w-4/5 h-16">
           <div>
-            <Link to="/" className="text-xl">
+            <Link to="/" className="text-xl font-bold">
               SilverCloud
             </Link>
           </div>
+          
+          {/* Menu Trigger Button */}
           <button
-            className="cursor-pointer focus:outline-none"
+            className="cursor-pointer focus:outline-none z-50 flex items-center gap-4 group"
             onClick={toggleMenu}
-            aria-label="Toggle menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
-            {isMenuOpen ? <p>Close</p> : <p>Menu</p>}
+            {/* Text Label */}
+            <p className="text-sm font-medium tracking-wide uppercase">
+              {isMenuOpen ? "Close" : "Menu"}
+            </p>
+            {/* Hamburger Icon */}
+            <HamburgerIcon isOpen={isMenuOpen} />
           </button>
         </nav>
       </div>
@@ -142,27 +193,27 @@ const Navbar = () => {
               id="links_wrapper"
               className="flex flex-row items-center md:items-end w-full h-auto md:h-1/3 justify-center gap-8 md:gap-24"
             >
-              {/* Main Navigation Links (Left Column) */}
+              {/* Main Navigation Links */}
               <div
                 id="navlinks"
                 className="w-1/2 flex flex-col justify-end items-end space-y-8 md:space-y-14 text-xl md:text-3xl text-right"
               >
                 {navItems.map((item) => (
-                  <Link key={item.name} to={item.href}>
+                  <MenuLink key={item.name} to={item.href}>
                     {item.name}
-                  </Link>
+                  </MenuLink>
                 ))}
               </div>
 
-              {/* Social Links (Right Column) */}
+              {/* Social Links */}
               <div
                 id="sociallinks"
-                className="w-1/2 flex flex-col justify-end items-start space-y-4 text-base md:text-lg text-gray-400 text-left"
+                className="w-1/2 flex flex-col justify-end items-start space-y-4 text-base md:text-lg text-left"
               >
                 {socialLinks.map((link) => (
-                  <Link key={link.name} to={link.href}>
+                  <MenuLink key={link.name} to={link.href}>
                     {link.name}
-                  </Link>
+                  </MenuLink>
                 ))}
               </div>
             </div>
