@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -16,20 +17,88 @@ const socialLinks = [
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const containerRef = useRef(null);
+  const navbarRef = useRef(null);
+  const tl = useRef(null);
+  const DARK_GREY = "#1a1a1a"; 
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  useEffect(() => {
+    let mm = gsap.matchMedia();
+    
+    let ctx = gsap.context(() => {
+
+      tl.current = gsap.timeline({ paused: true });
+
+      // --- 1. DESKTOP ANIMATION ---
+      mm.add("(min-width: 768px)", () => {
+        gsap.set(containerRef.current, {
+          transformOrigin: "top left",
+          rotation: -100,
+          yPercent: 0,
+          xPercent: 0,
+          autoAlpha: 1, 
+          visibility: "hidden" 
+        });
+
+        tl.current
+          .set(containerRef.current, { visibility: "visible" }) 
+          .to([containerRef.current, navbarRef.current], {
+            backgroundColor: DARK_GREY,
+            color: "#ffffff",
+            borderColor: DARK_GREY,
+            
+            rotation: 0, 
+            duration: 0.8,
+            ease: "power2.out",
+          }, "<"); 
+      });
+
+      // --- 2. MOBILE ANIMATION ---
+      mm.add("(max-width: 767px)", () => {
+        gsap.set(containerRef.current, {
+          yPercent: -100, 
+          rotation: 0,    
+          visibility: "hidden"
+        });
+
+        tl.current
+          .set(containerRef.current, { visibility: "visible" })
+          .to([containerRef.current, navbarRef.current], {
+            backgroundColor: DARK_GREY,
+            color: "#ffffff",
+            borderColor: DARK_GREY,
+
+            yPercent: 0, 
+            duration: 0.6,
+            ease: "power2.out",
+          }, "<");
+      });
+
+    });
+
+    return () => ctx.revert(); 
+  }, []);
+
+  useEffect(() => {
+    if (tl.current) {
+      if (isMenuOpen) {
+        tl.current.play();
+      } else {
+        tl.current.reverse();
+      }
+    }
+  }, [isMenuOpen]);
+
   return (
     <div>
       {/* Top Navigation Bar */}
       <div
-        className={`w-full flex justify-center border-b fixed top-0 left-0 z-50 transition-colors duration-300 ${
-          isMenuOpen
-            ? "bg-black text-white border-black"
-            : "bg-white text-black border-gray-300"
-        }`}
+        ref={navbarRef} 
+        className="w-full flex justify-center border-b border-gray-300 fixed top-0 left-0 bg-white z-50"
       >
         <nav className="flex justify-between items-center p-4 w-4/5 h-16">
           <div>
@@ -48,15 +117,10 @@ const Navbar = () => {
       </div>
 
       {/* Full Screen Menu Overlay */}
-      {/* UPDATE: Removed "{isMenuOpen && (..)}" wrapper. 
-          Added transition classes to sync with navbar. */}
       <div
-        id="nav_wrapper"
-        className={`fixed top-16 left-0 w-full h-screen z-40 flex justify-center bg-black text-white transition-all duration-300 ease-in-out ${
-          isMenuOpen
-            ? "opacity-100 visible" // Show when open
-            : "opacity-0 invisible pointer-events-none" // Hide when closed
-        }`}
+        ref={containerRef} 
+        id="nav_wrapper"        
+        className="fixed top-16 left-0 w-full h-screen z-40 flex justify-center bg-[#1a1a1a] text-white invisible"
       >
         <div
           id="nav_container"
