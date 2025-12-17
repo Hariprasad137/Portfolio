@@ -49,7 +49,7 @@ const MenuLink = ({ to, children }) => {
         {children}
       </span>
       {/* UPDATED: Changed duration-300 to duration-700 for a slower, smoother line */}
-      <span className="absolute bottom-0 left-0 h-[2px] w-full bg-white transform scale-x-0 transition-transform duration-700 ease-out origin-bottom-right group-hover:scale-x-100 group-hover:origin-bottom-left" />
+      <span className="absolute bottom-0 left-0 h-0.5 w-full bg-white transform scale-x-0 transition-transform duration-700 ease-out origin-bottom-right group-hover:scale-x-100 group-hover:origin-bottom-left" />
     </Link>
   );
 };
