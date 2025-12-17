@@ -15,23 +15,19 @@ const socialLinks = [
   { name: "Instagram", href: "" },
 ];
 
-// --- HAMBURGER COMPONENT ---
 const HamburgerIcon = ({ isOpen }) => {
   return (
     <div className="flex flex-col justify-center items-center w-6 h-6 space-y-1 overflow-hidden group">
-      {/* Line 1 */}
       <span
         className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
           isOpen ? "rotate-45 translate-y-1.5" : ""
         }`}
       />
-      {/* Line 2 */}
       <span
         className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
           isOpen ? "opacity-0 translate-x-full" : "opacity-100"
         }`}
       />
-      {/* Line 3 */}
       <span
         className={`bg-current h-0.5 w-6 rounded transition-all duration-300 ease-in-out ${
           isOpen ? "-rotate-45 -translate-y-1.5" : ""
@@ -41,15 +37,13 @@ const HamburgerIcon = ({ isOpen }) => {
   );
 };
 
-// --- LINK COMPONENT (Slower Animation) ---
 const MenuLink = ({ to, children }) => {
   return (
     <Link to={to} className="relative group inline-block py-1 overflow-hidden">
       <span className="text-gray-400 transition-colors duration-500 group-hover:text-white">
         {children}
       </span>
-      {/* UPDATED: Changed duration-300 to duration-700 for a slower, smoother line */}
-      <span className="absolute bottom-0 left-0 h-0.5 w-full bg-white transform scale-x-0 transition-transform duration-700 ease-out origin-bottom-right group-hover:scale-x-100 group-hover:origin-bottom-left" />
+      <span className="absolute bottom-0 left-0 h-[2px] w-full bg-white transform scale-x-0 transition-transform duration-700 ease-out origin-bottom-right group-hover:scale-x-100 group-hover:origin-bottom-left" />
     </Link>
   );
 };
@@ -72,7 +66,6 @@ const Navbar = () => {
     let ctx = gsap.context(() => {
       tl.current = gsap.timeline({ paused: true });
 
-      // --- DESKTOP ANIMATION ---
       mm.add("(min-width: 768px)", () => {
         gsap.set(containerRef.current, {
           transformOrigin: "top left",
@@ -85,7 +78,6 @@ const Navbar = () => {
 
         tl.current
           .set(containerRef.current, { visibility: "visible" }) 
-          // Animate Navbar and Menu Overlay together
           .to([containerRef.current, navbarRef.current], {
             backgroundColor: DARK_GREY,
             color: "#ffffff",
@@ -96,7 +88,6 @@ const Navbar = () => {
           }, "<"); 
       });
 
-      // --- MOBILE ANIMATION ---
       mm.add("(max-width: 767px)", () => {
         gsap.set(containerRef.current, {
           yPercent: -100, 
@@ -133,10 +124,8 @@ const Navbar = () => {
 
   return (
     <div>
-      {/* Top Navigation Bar */}
       <div
         ref={navbarRef} 
-        // FIX: Removed "transition-colors duration-300" so it doesn't fight with GSAP
         className="w-full flex justify-center border-b border-gray-300 fixed top-0 left-0 bg-white z-50 text-black"
       >
         <nav className="flex justify-between items-center p-4 w-4/5 h-16">
@@ -146,23 +135,19 @@ const Navbar = () => {
             </Link>
           </div>
           
-          {/* Menu Trigger Button */}
           <button
             className="cursor-pointer focus:outline-none z-50 flex items-center gap-4 group"
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
-            {/* Text Label */}
             <p className="text-sm font-medium tracking-wide uppercase">
               {isMenuOpen ? "Close" : "Menu"}
             </p>
-            {/* Hamburger Icon */}
             <HamburgerIcon isOpen={isMenuOpen} />
           </button>
         </nav>
       </div>
 
-      {/* Full Screen Menu Overlay */}
       <div
         ref={containerRef} 
         id="nav_wrapper"
@@ -172,7 +157,6 @@ const Navbar = () => {
           id="nav_container"
           className="w-full md:w-2/3 h-full flex flex-row justify-center items-center px-4 md:px-0"
         >
-          {/* Left Side: Image */}
           <div
             id="img_container"
             className="w-1/2 hidden xl:flex justify-center items-center mb-30"
@@ -184,16 +168,16 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Right Side: Links Wrapper */}
           <div
             id="navlink_container"
             className="w-full xl:w-1/2 flex flex-row justify-center items-center mb-20 md:mb-30 xl:pr-30"
           >
             <div
               id="links_wrapper"
-              className="flex flex-row items-center md:items-end w-full h-auto md:h-1/3 justify-center gap-8 md:gap-24"
+              // FIXED: Removed 'items-center'. Changed to 'items-end' for ALL screens.
+              // This ensures Social Links stay anchored to the bottom alongside Nav Links on mobile.
+              className="flex flex-row items-end w-full h-auto md:h-1/3 justify-center gap-8 md:gap-24"
             >
-              {/* Main Navigation Links */}
               <div
                 id="navlinks"
                 className="w-1/2 flex flex-col justify-end items-end space-y-8 md:space-y-14 text-xl md:text-3xl text-right"
@@ -205,7 +189,6 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {/* Social Links */}
               <div
                 id="sociallinks"
                 className="w-1/2 flex flex-col justify-end items-start space-y-4 text-base md:text-lg text-left"
