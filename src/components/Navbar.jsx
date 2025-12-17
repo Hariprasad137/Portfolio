@@ -20,7 +20,8 @@ const Navbar = () => {
   const containerRef = useRef(null);
   const navbarRef = useRef(null);
   const tl = useRef(null);
-  const DARK_GREY = "#1a1a1a"; 
+
+  const DARK_GREY = "#1a1a1a";
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,8 +33,6 @@ const Navbar = () => {
     let ctx = gsap.context(() => {
 
       tl.current = gsap.timeline({ paused: true });
-
-      // --- 1. DESKTOP ANIMATION ---
       mm.add("(min-width: 768px)", () => {
         gsap.set(containerRef.current, {
           transformOrigin: "top left",
@@ -50,14 +49,11 @@ const Navbar = () => {
             backgroundColor: DARK_GREY,
             color: "#ffffff",
             borderColor: DARK_GREY,
-            
             rotation: 0, 
             duration: 0.8,
             ease: "power2.out",
           }, "<"); 
       });
-
-      // --- 2. MOBILE ANIMATION ---
       mm.add("(max-width: 767px)", () => {
         gsap.set(containerRef.current, {
           yPercent: -100, 
@@ -71,7 +67,6 @@ const Navbar = () => {
             backgroundColor: DARK_GREY,
             color: "#ffffff",
             borderColor: DARK_GREY,
-
             yPercent: 0, 
             duration: 0.6,
             ease: "power2.out",
@@ -119,17 +114,17 @@ const Navbar = () => {
       {/* Full Screen Menu Overlay */}
       <div
         ref={containerRef} 
-        id="nav_wrapper"        
+        id="nav_wrapper"
         className="fixed top-16 left-0 w-full h-screen z-40 flex justify-center bg-[#1a1a1a] text-white invisible"
       >
         <div
           id="nav_container"
           className="w-full md:w-2/3 h-full flex flex-row justify-center items-center px-4 md:px-0"
         >
-          {/* Left Side: Image (Hidden on Mobile) */}
+          {/* Left Side: Image */}
           <div
             id="img_container"
-            className="w-1/2 hidden md:flex justify-center items-center mb-30"
+            className="w-1/2 hidden xl:flex justify-center items-center mb-30"
           >
             <img
               className="w-7/12 h-7/12 object-cover overflow-hidden"
@@ -141,16 +136,16 @@ const Navbar = () => {
           {/* Right Side: Links Wrapper */}
           <div
             id="navlink_container"
-            className="w-full md:w-1/2 flex flex-row justify-center items-center mb-20 md:mb-30 md:pr-30"
+            className="w-full xl:w-1/2 flex flex-row justify-center items-center mb-20 md:mb-30 xl:pr-30"
           >
             <div
               id="links_wrapper"
-              className="flex flex-row items-end w-full h-auto md:h-1/3 justify-around md:justify-between"
+              className="flex flex-row items-center md:items-end w-full h-auto md:h-1/3 justify-center gap-8 md:gap-24"
             >
-              {/* Main Navigation Links */}
+              {/* Main Navigation Links (Left Column) */}
               <div
                 id="navlinks"
-                className="w-1/2 flex flex-col justify-end items-center md:items-center space-y-10 md:space-y-14 text-xl md:text-3xl"
+                className="w-1/2 flex flex-col justify-end items-end space-y-8 md:space-y-14 text-xl md:text-3xl text-right"
               >
                 {navItems.map((item) => (
                   <Link key={item.name} to={item.href}>
@@ -159,10 +154,10 @@ const Navbar = () => {
                 ))}
               </div>
 
-              {/* Social Links */}
+              {/* Social Links (Right Column) */}
               <div
                 id="sociallinks"
-                className="w-1/2 flex flex-col justify-end items-center md:items-start space-y-4 text-base md:text-lg text-gray-400"
+                className="w-1/2 flex flex-col justify-end items-start space-y-4 text-base md:text-lg text-gray-400 text-left"
               >
                 {socialLinks.map((link) => (
                   <Link key={link.name} to={link.href}>
