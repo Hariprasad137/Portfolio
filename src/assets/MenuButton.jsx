@@ -24,7 +24,7 @@ const MenuButton = ({ isOpen, toggleMenu }) => {
       <div className="flex flex-col justify-between items-center w-6 h-3.5">
         <span
           className={`w-6 h-0.5 bg-white origin-center ${isOpen ? openTransition : closeTransition} ${
-            isOpen ? "rotate-45 translate-y-[6px]" : ""
+            isOpen ? "rotate-45 translate-y-1.5" : ""
           }`}
         />
         
@@ -36,7 +36,7 @@ const MenuButton = ({ isOpen, toggleMenu }) => {
 
         <span
           className={`w-6 h-0.5 bg-white origin-center ${isOpen ? openTransition : closeTransition} ${
-            isOpen ? "-rotate-45 -translate-y-[6px]" : ""
+            isOpen ? "-rotate-45 -translate-y-1.5" : ""
           }`}
         />
       </div>
