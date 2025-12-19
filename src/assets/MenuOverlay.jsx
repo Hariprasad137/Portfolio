@@ -88,7 +88,7 @@ const MenuOverlay = ({ isMenuOpen, toggleMenu }) => {
                   <Link
                     to={item.link}
                     onClick={toggleMenu}
-                    className="group relative inline-block hover:text-gray-300 transition-colors"
+                    className="group relative inline-block transition-colors"
                   >
                     {item.name}
                     <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-white rounded-full transform transition-transform duration-500 ease-out origin-right scale-x-0 group-hover:scale-x-100 group-hover:origin-left" />
