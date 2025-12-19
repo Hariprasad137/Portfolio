@@ -1,0 +1,38 @@
+const MenuButton = ({ isOpen, toggleMenu }) => {
+  return (
+    <button
+      onClick={toggleMenu}
+      className="group flex items-center gap-3 uppercase font-medium tracking-wider cursor-none"
+    >
+      <div className="relative h-6 overflow-hidden text-right">
+        <div
+          className={`flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+            isOpen ? "-translate-y-1/2" : "translate-y-0"
+          }`}
+        >
+          <span className="h-6 flex items-center">Open</span>
+          <span className="h-6 flex items-center">Close</span>
+        </div>
+      </div>
+      <div className="flex flex-col justify-between items-center w-6 h-3.5">
+        <span
+          className={`w-6 h-0.5 bg-white transition-all duration-300 ease-out origin-center ${
+            isOpen ? "rotate-45 translate-y-1.5" : ""
+          }`}
+        />
+        <span
+          className={`w-6 h-0.5 bg-white transition-all duration-300 ease-out ${
+            isOpen ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <span
+          className={`w-6 h-0.5 bg-white transition-all duration-300 ease-out origin-center ${
+            isOpen ? "-rotate-45 -translate-y-1.5" : ""
+          }`}
+        />
+      </div>
+    </button>
+  );
+};
+
+export default MenuButton;
